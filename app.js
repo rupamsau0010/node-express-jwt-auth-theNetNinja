@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 
 // database connection
 const dbURI = process.env.URI;
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then((result) => app.listen(3000 || process.env.PORT, function(){console.log("Database is connected to MongoDB Atlas \nServer is started on port 3000")}))
   .catch((err) => console.log(err));
 
