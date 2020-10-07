@@ -12,6 +12,18 @@ const handleErrors = (err) => {
     console.log(err.message, err.code);
     let errors = { email: "", password: ""};
 
+    // Incorrect Email while login...
+    if (err.message === "Incorrect Email") {
+        errors.email = "That email is not Registrated. Consider Signup.";
+        return errors;
+    }
+
+    // Incorrect Password while login...
+    if (err.message === "Incorrect Password") {
+        errors.password = "That Password is incorrect. Try Again.";
+        return errors;
+    }
+
     // duplicate error handel...
     if(err.code === 11000) {
         errors.email = "email is already registrated";
@@ -62,7 +74,17 @@ module.exports.signup_post = async (req, res) => {
 
 module.exports.login_post = async (req, res) => {
     const {email, password} = req.body;
-    console.log(email + "\n" + password);
 
-    res.send("login post");
+    // console.log(email + "\n" + password);
+    // res.send("login post");
+
+    try {
+        const user = await User.login(email, password);
+        const token = createToken(user._id);
+        res.cookie("jwt", token, {httpOnly: true, maxAge: maxAge * 1000});
+        res.status(200).json({ user: user._id });
+    } catch(err) {
+        const errors = handleErrors(err);
+        res.status(400).json({ errors });
+    }
 }
