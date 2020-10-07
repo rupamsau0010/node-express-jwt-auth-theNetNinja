@@ -26,16 +26,16 @@ app.get('/', (req, res) => res.render('home'));
 app.get('/smoothies', (req, res) => res.render('smoothies'));
 app.use(authRoutes);
 
-// Cookies...
-app.get("/set-cookies", (req, res) => {
-    // res.setHeader("Set-Cookie", "newUser=true");
-    res.cookie("newUser", false);
-    res.cookie("isEmployee", true, {maxAge: 1000 * 60 * 60 * 24, httpOnly: true});
-    res.send("You got the cookies");
-});
+// // Cookies...
+// app.get("/set-cookies", (req, res) => {
+//     // res.setHeader("Set-Cookie", "newUser=true");
+//     res.cookie("newUser", false);
+//     res.cookie("isEmployee", true, {maxAge: 1000 * 60 * 60 * 24, httpOnly: true});
+//     res.send("You got the cookies");
+// });
 
-app.get("/get-cookies", (req, res) => {
-    const cookie = req.cookies;
-    console.log(cookie);
-    res.json(cookie);
-});
+// app.get("/get-cookies", (req, res) => {
+//     const cookie = req.cookies;
+//     console.log(cookie);
+//     res.json(cookie);
+// });
