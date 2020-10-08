@@ -1,33 +1,35 @@
+// Importing all the depandancies...
 require("dotenv").config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
-const { requireAuth } = require("./middleware/authMiddleware");
+const { requireAuth, chechUser } = require("./middleware/authMiddleware");
 
 const app = express();
 
-// middleware
+// middleware...
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
-// view engine
+// view engine...
 app.set('view engine', 'ejs');
 
-// database connection
+// database connection...
 const dbURI = process.env.URI;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-  .then((result) => app.listen(3000 || process.env.PORT, function(){console.log("Database is connected to MongoDB Atlas \nServer is started on port 3000")}))
+  .then((result) => app.listen(3000 || process.env.PORT, function(){console.log("Database is connected to MongoDB Atlas \nServer is started on port 3000")}))  // Running the App in port 3000...
   .catch((err) => console.log(err));
 
 // routes
+app.get("*", chechUser); // Applies in all the get Routes...
 app.get('/', (req, res) => res.render('home'));
 app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'));
-app.use(authRoutes);
+app.use(authRoutes); // Using routes folder's "authRoutess.js" file's routes...
 
-// // Cookies...
+// // Testing of cookies without cookie-parser...
 // app.get("/set-cookies", (req, res) => {
 //     // res.setHeader("Set-Cookie", "newUser=true");
 //     res.cookie("newUser", false);

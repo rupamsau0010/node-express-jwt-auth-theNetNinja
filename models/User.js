@@ -1,3 +1,4 @@
+// Importing Depandaincies...
 const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
@@ -30,7 +31,7 @@ userSchema.pre("save", async function(next){
     next();
 })
 
-// Static Method to login th user...
+// Static Method to login the user...
 userSchema.statics.login = async function(email, password) {
     const user = await this.findOne({ email: email });
     if(user) {
